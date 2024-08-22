@@ -30,13 +30,15 @@ def empilhar_planilhas(caminho_pasta):
     dfs = []
 
     # Percorre todos os arquivos na pasta
-    for arquivo in os.listdir(caminho_pasta):
+    for arquivo in os.listdir(caminho_pasta, Reduce = False):
         if arquivo.endswith('.CSV'):
             caminho_arquivo = os.path.join(caminho_pasta, arquivo)
 
             # Leitura da planilha e adição ao DataFrame
             df_unico = pd.read_csv(caminho_arquivo,
             sep = ';', encoding= 'latin1', header = None, names = range(20))
+            if Reduce:
+                df_unico = df_unico.drop(list(range(3, 20)), axis = 1)
             df_unico.columns = df_unico.iloc[8]
             df_unico['Região'] = df_unico.iloc[0,1]
             df_unico['UF'] = df_unico.iloc[1,1]
